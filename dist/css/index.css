@@ -1,0 +1,11 @@
+#app {
+  padding: 20px;
+  border-radius: 5px;
+  border: 1px solid red;
+}
+
+.img {
+  background-image: url(images/9ce189ace7f18fceec3f275e0e3b0a78.jpg);
+  width: 600px;
+  height: 300px;
+}
