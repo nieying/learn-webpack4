@@ -5,7 +5,16 @@
 }
 
 .img {
-  background-image: url(images/9ce189ace7f18fceec3f275e0e3b0a78.jpg);
-  width: 600px;
+  background-image: url(http://localhost:8808/images/9ce189ace7f18fceec3f275e0e3b0a78.jpg);
   height: 300px;
+}.btn {
+  color: #FFbb44;
+  display: inline-block;
+  width: 200px;
+  height: 40px;
+  line-height: 40px;
 }
+.tab {
+  background: #5f5f5f;
+  padding: 20px;
+  display: inline-block; }

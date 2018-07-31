@@ -3,6 +3,9 @@ const jsPlugin = require("uglifyjs-webpack-plugin"); // js压缩插件
 const htmlPlugin = require("html-webpack-plugin"); // html压缩插件
 const extractTextPlugin = require("extract-text-webpack-plugin") // css分离
 
+var website = {
+  publicPath: "http://localhost:8808/"
+}
 module.exports = {
   mode: "development",
   // 入口文件
@@ -14,7 +17,8 @@ module.exports = {
   // 出口文件
   output: {
     path: path.resolve(__dirname, "../dist"),
-    filename: "[name].js"
+    filename: "[name].js",
+    publicPath: website.publicPath //publicPath：主要作用就是处理静态文件路径的。
   },
   // css, 图片，压缩
   module: {
@@ -23,26 +27,47 @@ module.exports = {
       {
         test: /\.css$/,
         use: extractTextPlugin.extract({
-           fallback: "style-loader",
-             use: "css-loader"
+          fallback: "style-loader",
+          use: "css-loader"
         })
         // [
         //   {loader: "style-loader"},
         //   {loader: "css-loader"}
         // ]
       },
+      // less
+      {
+        test: /\.less$/,
+        use: extractTextPlugin.extract({
+          use: [
+            {loader: "css-loader"},
+            {loader: "less-loader"}
+          ],
+          // use style-loader in development
+          fallback: "style-loader"
+        })
+      },
+      // sass 
+      {
+        test: /\.scss$/,
+        use: extractTextPlugin.extract({
+          use: [
+            {loader: "css-loader"},
+            {loader: "sass-loader"}
+          ],
+          fallback: "style-loader"
+        })
+      },
       // img
       {
         test: /\.(png|jepg|jpg|gif)/,
-        use: [
-          {
-            loader: "url-loader",
-            options: {
-              limit: 500, //是把小于500B的文件打成Base64的格式，写入JS
-              outputPath: 'images/', //打包后的图片放到images文件夹下
-            } 
+        use: [{
+          loader: "url-loader",
+          options: {
+            limit: 500, //是把小于500B的文件打成Base64的格式，写入JS
+            outputPath: 'images/', //打包后的图片放到images文件夹下
           }
-        ]
+        }]
       },
       {
         test: /\.(htm|html)$/i,
@@ -66,7 +91,7 @@ module.exports = {
         hash: true, // 避免缓存
       }
     }),
-     new extractTextPlugin("css/index.css")
+    new extractTextPlugin("css/index.css")
   ],
   // webpack开发服务项
   devServer: {
