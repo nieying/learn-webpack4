@@ -28,7 +28,9 @@ module.exports = {
         test: /\.css$/,
         use: extractTextPlugin.extract({
           fallback: "style-loader",
-          use: "css-loader"
+          use: [
+            {loader: "css-loader"},
+          ]
         })
         // [
         //   {loader: "style-loader"},
@@ -69,9 +71,21 @@ module.exports = {
           }
         }]
       },
+      // html
       {
         test: /\.(htm|html)$/i,
         use: ['html-withimg-loader']
+      },
+      // babel
+      {
+        test: /\.(jsx|js)$/,
+        use: {
+          loader: 'babel-loader',
+          // option: {
+          //   presets: ['es2015', 'react']
+          // }
+        },
+        exclude: /node_modules/
       }
     ]
   },
@@ -91,7 +105,7 @@ module.exports = {
         hash: true, // 避免缓存
       }
     }),
-    new extractTextPlugin("css/index.css")
+    new extractTextPlugin("css/index.css"),
   ],
   // webpack开发服务项
   devServer: {
